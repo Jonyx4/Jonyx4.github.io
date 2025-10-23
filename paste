@@ -1,0 +1,36 @@
+//
+// Policy: SendEventToCOB00P0SNIP
+// Descripción: Genera un nuevo evento (upEvent) y lo envía al ObjectServer COB00P0SNIP
+//
+
+try {
+
+    // Crear el nuevo evento basado en otro o a partir de tus variables
+    upEvent = NewObject();
+
+    upEvent.Identifier    = @Identifier + "Over";
+    upEvent.Summary       = "IPC Impaired state is over";
+    upEvent.AlertGroup    = @AlertGroup + "Over";
+    upEvent.AlertKey      = @AlertKey;
+    upEvent.Component     = @Component;
+    upEvent.ComponentType = @ComponentType;
+    upEvent.InstanceId    = @InstanceId;
+    upEvent.InstanceValue = "No more ticket request timeouts";
+    upEvent.Manager       = @Manager;
+    upEvent.Node          = @Node;
+    upEvent.ResourceId    = @ResourceId;
+    upEvent.CustomerCode  = @CustomerCode;
+    upEvent.Severity      = 3;
+    upEvent.SubComponent  = @SubComponent + "_OVER";
+    upEvent.ZDConsoleType = "Master";
+    upEvent.ExpireTime    = @ExpireTime;
+    upEvent.ZTicketData   = 'ReportFile="' + ReportObject.file + '"';
+
+    // Enviar el evento al ObjectServer COB00P0SNIP
+    AddDataItem("COB00P0SNIP:AlertStatus", upEvent);
+
+    log("Evento enviado al ObjectServer COB00P0SNIP correctamente: " + upEvent.Identifier);
+
+} catch (e) {
+    log("❌ Error enviando evento a COB00P0SNIP: " + e);
+}
